@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Settings · PagerDuty Signal</title><link rel="icon" href="icons/icon32.png"><link rel="stylesheet" href="styles.css">
+</head>
+<body class="settings-page">
+  <aside class="sidebar">
+    <a class="brand" href="#top"><img src="icons/icon48.png" width="36" height="36" alt=""><span>Signal<span class="brand-sub">FOR PAGERDUTY</span></span></a>
+    <div class="nav-label">WORKSPACE</div>
+    <nav aria-label="Settings sections">
+      <a class="nav-item selected" href="#top"><span class="nav-icon">▦</span> Extension settings</a>
+      <a class="nav-item" href="#connection"><span class="nav-icon">↔</span> Connection</a>
+      <a class="nav-item" href="#monitoring"><span class="nav-icon">◎</span> Monitoring</a>
+      <a class="nav-item" href="#appearance"><span class="nav-icon">◐</span> Appearance</a>
+    </nav>
+    <div class="sidebar-foot"><span class="tiny-dot"></span> Small signal. Clear picture.<br><span class="version">Version 1.0.0 · Stored on this device</span></div>
+  </aside>
+  <div class="workspace" id="top">
+    <header class="topbar"><div>Workspace <span class="slash">/</span> <strong>Extension settings</strong></div><span class="local-badge"><span class="tiny-dot"></span> Local & private</span></header>
+    <main class="settings-main">
+      <div class="page-heading"><div class="eyebrow">ONE LESS THING TO CHECK</div><h1>Your incidents, at a glance.</h1><p>A small change to your PagerDuty tab. A clear view of what needs you.</p></div>
+      <div class="settings-grid">
+        <div class="main-column">
+          <section class="card connection-card" id="connection" aria-labelledby="connection-title">
+            <div class="card-heading"><div><div class="section-number">01 <span>CONNECTION</span></div><h2 id="connection-title">Connect your PagerDuty account</h2></div><span class="pill" id="connection-pill">Not connected</span></div>
+            <p class="card-description">Use a personal API token for the user you’re signed in as. Signal checks your identity and account before monitoring.</p>
+            <div id="identity" class="identity hidden"><div class="avatar" id="avatar">PD</div><div><strong id="user-name"></strong><div class="muted small" id="user-email"></div><div class="muted small" id="user-account"></div></div><button class="text-button danger" type="button" id="disconnect">Disconnect</button></div>
+            <form id="connection-form">
+              <div class="connection-fields"><label>Data region<select id="region"><option value="us">United States</option><option value="eu">European Union</option></select></label><label>Account URL <span class="optional">optional · detected from token</span><input id="account-origin" type="url" placeholder="https://acme.pagerduty.com" autocomplete="off"></label></div>
+              <label class="token-label">Personal user API token<input id="token" type="password" autocomplete="off" spellcheck="false" placeholder="Paste your API token" required maxlength="1024" aria-describedby="token-help"></label>
+              <p class="field-help" id="token-help">Create one in PagerDuty → My Profile → User Settings → API Access. Account-level and integration keys aren’t supported.</p>
+              <label class="checkbox-row"><input id="remember" type="checkbox"><span>Remember token after restarting Chrome<span class="field-help block">Stores it locally in Chrome without additional encryption. Leave unchecked for session-only storage.</span></span></label>
+              <div class="form-actions"><a class="subtle-link" href="https://docs.pagerduty.com/integrations/api-access-keys" target="_blank" rel="noreferrer">How to get a token <svg class="external-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 18 18 6M7 6h11v11"/></svg></a><button class="button secondary" type="submit" id="connect">Connect account <span><svg class="external-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 18 18 6M7 6h11v11"/></svg></span></button></div>
+            </form>
+            <p id="connection-feedback" class="feedback" role="status" aria-live="polite"></p>
+          </section>
+
+          <form id="settings-form">
+            <section class="card" id="monitoring" aria-labelledby="monitoring-title">
+              <div class="card-heading"><div><div class="section-number">02 <span>MONITORING</span></div><h2 id="monitoring-title">Keep watch on what matters</h2></div></div>
+              <label class="setting-row"><span><strong>Enable favicon updates</strong><span class="field-help block">Pause anytime to restore the original PagerDuty favicon.</span></span><input id="enabled" class="switch" type="checkbox" role="switch"></label>
+              <div class="divider"></div>
+              <label>My area of responsibility<select id="scope"><option value="assigned">Incidents assigned to me</option><option value="my-teams">Incidents for my teams</option><option value="teams">Incidents for selected teams</option><option value="services">Incidents for selected services</option></select></label>
+              <p class="field-help" id="scope-help">Uses the current user returned by your personal API token.</p>
+              <label class="conditional hidden" id="teams-field">Team IDs<input id="team-ids" placeholder="PABC123, PDEF456" spellcheck="false"><span class="field-help block">Comma-separated IDs from each team’s PagerDuty URL.</span></label>
+              <label class="conditional hidden" id="services-field">Service IDs<input id="service-ids" placeholder="PABC123, PDEF456" spellcheck="false"><span class="field-help block">Comma-separated IDs from each service’s PagerDuty URL.</span></label>
+              <div class="two-fields"><label>Refresh every<select id="poll-seconds"><option value="30">30 seconds</option><option value="60">1 minute</option><option value="120">2 minutes</option><option value="300">5 minutes</option></select></label><label>Severity based on<select id="severity-source"><option value="priority">Priority, then urgency</option><option value="urgency">Urgency only</option></select></label></div>
+              <label class="setting-row compact"><span><strong>Include acknowledged incidents</strong><span class="field-help block">Keep an incident visible until it’s resolved.</span></span><input id="include-acknowledged" class="switch" type="checkbox" role="switch"></label>
+              <fieldset class="tab-scope"><legend>Update favicons in</legend><div class="radio-options"><label><input type="radio" name="tabs" value="all" checked><span><strong>All PagerDuty tabs</strong><span class="field-help block">Stay visible while you work elsewhere</span></span></label><label><input type="radio" name="tabs" value="active"><span><strong>Active tab only</strong><span class="field-help block">The selected tab in each window</span></span></label></div></fieldset>
+            </section>
+
+            <section class="card" id="appearance" aria-labelledby="appearance-title">
+              <div class="card-heading"><div><div class="section-number">03 <span>APPEARANCE</span></div><h2 id="appearance-title">Make your signal recognizable</h2></div></div>
+              <p class="card-description">The highest severity wins. No open incidents? You’ll see a green check.</p>
+              <div class="color-list" id="color-list"></div>
+              <label class="setting-row compact"><span><strong>Show incident count</strong><span class="field-help block">Total open incidents in your chosen scope. Counts cap at 99+.</span></span><input id="show-count" class="switch" type="checkbox" role="switch"></label>
+              <details id="priority-details"><summary>Customize priority mapping <span>+</span></summary><p class="field-help">Enter comma-separated priority names for each severity. Matches ignore case. Unmapped priorities use urgency: high → High, low → Low.</p><div id="priority-rules" class="priority-rules"></div></details>
+            </section>
+            <div class="save-bar"><button class="text-button" type="button" id="reset">Reset preferences</button><div><span id="dirty-indicator" class="muted small"></span><button class="button primary" type="submit" id="save">Save preferences <span>✓</span></button></div></div>
+            <p id="settings-feedback" class="feedback" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+        <aside class="preview-column" aria-label="Favicon preview and connection status">
+          <section class="preview-card"><div class="preview-eyebrow"><span class="tiny-dot"></span> LIVE PREVIEW <span class="preview-badge">EXAMPLE</span></div><h2>A little icon.<br>A useful heads-up.</h2><p>See the signal before opening the tab.</p><div class="browser-preview"><div class="browser-dots"><i></i><i></i><i></i></div><div class="browser-tab"><canvas id="tab-preview" width="64" height="64"></canvas><span>Incidents · PagerDuty</span><span class="tab-close">×</span></div><div class="browser-address"><span>⌑</span> acme.pagerduty.com/incidents</div><div class="browser-body"><div></div><div></div><div></div></div></div><label class="preview-label" for="preview-level">Preview a status</label><select id="preview-level"><option value="critical">Critical · 3 incidents</option><option value="high">High · 3 incidents</option><option value="medium">Medium · 3 incidents</option><option value="low">Low · 3 incidents</option><option value="clear">All clear · no incidents</option><option value="stale">Connection unavailable</option></select><div class="preview-caption"><canvas id="large-preview" width="64" height="64"></canvas><div><strong id="preview-name">Critical</strong><span id="preview-description">Highest severity, always visible.</span></div></div></section>
+          <section class="status-card"><div class="eyebrow">CURRENT STATUS</div><div class="status-heading"><span class="status-dot" id="live-dot"></span><strong id="live-status">Not connected</strong></div><p id="live-description">Connect your account to start monitoring.</p><div id="last-checked" class="small muted">No checks yet</div><button class="text-button" type="button" id="refresh">Refresh status ↻</button></section>
+          <div class="privacy-note"><span>⌁</span><p>Your token stays in Chrome. Requests go directly to PagerDuty. No analytics. No third-party servers.</p></div>
+        </aside>
+      </div>
+      <footer class="page-footer">Made for a more focused on-call day.<span>Signal is an independent extension.</span></footer>
+    </main>
+  </div>
+  <script type="module" src="options.js"></script>
+</body>
+</html>
